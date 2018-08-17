@@ -1,16 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const App: React.SFC<{ compiler: string; framework: string }> = props => {
+const App: React.SFC = props => {
     return (
         <div>
-            <div>{props.compiler}</div>
-            <div>{props.framework}</div>
+            <div>App running...</div>
         </div>
     );
 };
 
-ReactDOM.render(
-    <App compiler="TypeScript" framework="React" />,
-    document.getElementById('root'),
-);
+ReactDOM.render(<App />, document.getElementById('root'));
