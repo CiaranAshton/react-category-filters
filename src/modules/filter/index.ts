@@ -1,3 +1,5 @@
+import { getProducts, getProductTypes } from '../products';
+
 // types
 export const ADD_FILTER = 'ADD_FILTER';
 export const ADD_FILTER_SUCCESS = 'ADD_FILTER_SUCCESS';
@@ -49,4 +51,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
         default:
             return state;
     }
+};
+
+export const getFilteredProducts = state => {
 };
