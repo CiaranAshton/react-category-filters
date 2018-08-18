@@ -4,19 +4,19 @@ const { createStore, combineReducers } = require('redux');
 const { uniqueId } = require('lodash/fp');
 
 // integration tests
-describe.skip('Filter integration tests', () => {
+describe('Filter integration tests', () => {
     test('With no filters', () => {
         const store = createStoreWithProducts(
             product('Jumper', 'Christmas Jumper', 'Female'),
             product('Jumper', 'Wooly Sweater', 'Male'),
             product('Shorts', 'Pinstriped Shorts', 'Male'),
             product('Dress', 'Long Summer Dress', 'Female'),
-            product('Dress', 'Blue Straigt Dress', 'Female'),
+            product('Dress', 'Blue Straight Dress', 'Female'),
             product('Shorts', 'Cargos', 'Male'),
         );
 
         const getFilteredProductsExpected = products(
-            selection('Female', 2,
+            selection('Female', 3,
                 range('Jumpers',
                     item('Christmas Jumper'),
                 ),
@@ -37,7 +37,7 @@ describe.skip('Filter integration tests', () => {
         );
 
         expect(getFilteredProducts(store.getState()))
-            .toMatchObject(getFilteredProductsExpected);
+            .toEqual(getFilteredProductsExpected);
     });
 });
 
@@ -91,5 +91,14 @@ const createStoreWithProducts = (...products: Product[]) =>
             filter: reducer,
             products: productsReducer,
         }),
-        { products },
+        { 
+            products: {
+                items: products 
+            }
+        },
     );
+
+const log = stuff => {
+    console.log(JSON.stringify(stuff, null, 2));
+    return stuff;
+};

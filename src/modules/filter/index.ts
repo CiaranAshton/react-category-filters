@@ -1,4 +1,7 @@
-import { getProducts, getProductTypes } from '../products';
+import { getProducts } from '../products';
+const { pipe, groupBy } = require('lodash/fp');
+const map = require('lodash/fp/map').convert({ cap: false });
+const pluralize = require('pluralize');
 
 // types
 export const ADD_FILTER = 'ADD_FILTER';
@@ -22,7 +25,6 @@ export const ISSUE_ADDING_FILTER = 'ISSUE_ADDING_FILTER';
 // initial state
 const INITIAL_STATE = {
     filters: [],
-    status: undefined,
 };
 
 // reducer
@@ -31,21 +33,7 @@ export default (state = INITIAL_STATE, { type, payload }) => {
         case ADD_FILTER:
             return {
                 ...state,
-                status: LOADING,
-            };
-
-        case ADD_FILTER_SUCCESS:
-            return {
-                ...state,
                 filters: [payload, ...state.filters],
-                status: SUCCESS,
-            };
-
-        case ADD_FILTER_FAILED:
-            return {
-                ...state,
-                error: payload,
-                status: FAILED,
             };
 
         default:
@@ -53,5 +41,21 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     }
 };
 
-export const getFilteredProducts = state => {
-};
+// helpers
+const refineRange = (item, key) => ({
+    label: pluralize(key),
+    items: map(({ title }) => title)(item),
+});
+
+const groupSelections = (selection, key) => ({
+    label: key,
+    count: selection.length,
+    items: map(refineRange)(groupBy('type')(selection)),
+});
+
+// selectors
+export const getFilteredProducts = state =>
+    pipe(
+        groupBy('gender'),
+        map(groupSelections),
+    )(getProducts(state));
