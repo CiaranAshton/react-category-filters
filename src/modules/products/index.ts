@@ -1,3 +1,6 @@
+const { pipe, map, uniq } = require('lodash/fp');
+const pluralize = require('pluralize');
+
 // types
 export const READ_PRODUCTS = 'READ_PRODUCTS';
 export const READ_PRODUCTS_SUCCESS = 'READ_PRODUCTS_SUCCESS';
@@ -61,3 +64,10 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 
 // selectors
 export const getProducts = state => state.products.items;
+
+export const getProductTypes = ({ products }): string[] =>
+    pipe(
+        map('type'),
+        uniq,
+        map(pluralize),
+    )(products.items);
