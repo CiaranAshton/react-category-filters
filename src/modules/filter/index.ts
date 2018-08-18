@@ -5,22 +5,12 @@ const pluralize = require('pluralize');
 
 // types
 export const ADD_FILTER = 'ADD_FILTER';
-export const ADD_FILTER_SUCCESS = 'ADD_FILTER_SUCCESS';
-export const ADD_FILTER_FAILED = 'ADD_FILTER_FAILED';
 
 // actions
 export const addFilter = (filter: string): { type: string; filter: string } => ({
     type: ADD_FILTER,
     filter,
 });
-
-// statuses
-export const LOADING = 'LOADING';
-export const FAILED = 'FAILED';
-export const SUCCESS = 'SUCCESS';
-
-// errors
-export const ISSUE_ADDING_FILTER = 'ISSUE_ADDING_FILTER';
 
 // initial state
 const INITIAL_STATE = {
