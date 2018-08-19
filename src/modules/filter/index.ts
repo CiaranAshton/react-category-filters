@@ -33,14 +33,33 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     }
 };
 
+// types
+export type Product = {
+    id: string;
+    type: string;
+    title: string;
+    gender: string;
+};
+
+export type Selection = {
+    label: string;
+    count: number;
+    items: Range[];
+};
+
+export type Range = {
+    label: string;
+    items: string[];
+};
+
 // helpers
-const refineRange = (item, key) => ({
-    label: pluralize(key),
+const refineRange = (item: string, label: string): Range => ({
+    label: pluralize(label),
     items: map(({ title }) => title)(item),
 });
 
-const groupSelections = (selection, key) => ({
-    label: key,
+const groupSelections = (selection: string, label: string): Selection => ({
+    label,
     count: selection.length,
     items: map(refineRange)(groupBy('type')(selection)),
 });

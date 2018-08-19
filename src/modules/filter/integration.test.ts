@@ -1,4 +1,5 @@
 import reducer, { getFilteredProducts } from './';
+import { Product, Selection, Range } from './';
 import productsReducer from '../products/index';
 const { createStore, combineReducers } = require('redux');
 const { uniqueId } = require('lodash/fp');
@@ -41,25 +42,6 @@ describe('Filter integration tests', () => {
     });
 });
 
-// types
-type Product = {
-    id: string;
-    type: string;
-    title: string;
-    gender: string;
-};
-
-type Selection = {
-    label: string;
-    count: number;
-    items: Range[];
-};
-
-type Range = {
-    label: string;
-    items: string[];
-};
-
 // helper functions
 const product = (type: string, title: string, gender: string): Product => ({
     // id: uniqueId('product-'),
@@ -91,10 +73,10 @@ const createStoreWithProducts = (...products: Product[]) =>
             filter: reducer,
             products: productsReducer,
         }),
-        { 
+        {
             products: {
-                items: products 
-            }
+                items: products,
+            },
         },
     );
 
