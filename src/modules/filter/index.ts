@@ -1,14 +1,14 @@
 import { getProducts } from '../products';
-const { pipe, groupBy } = require('lodash/fp');
+const { pipe, groupBy, pull, contains } = require('lodash/fp');
 const map = require('lodash/fp/map').convert({ cap: false });
 const pluralize = require('pluralize');
 
 // types
-export const ADD_FILTER = 'ADD_FILTER';
+export const TOGGLE_FILTER = 'TOGGLE_FILTER';
 
 // actions
 export const addFilter = (filter: string): { type: string; filter: string } => ({
-    type: ADD_FILTER,
+    type: TOGGLE_FILTER,
     filter,
 });
 
@@ -20,10 +20,12 @@ const INITIAL_STATE = {
 // reducer
 export default (state = INITIAL_STATE, { type, payload }) => {
     switch (type) {
-        case ADD_FILTER:
+        case TOGGLE_FILTER:
             return {
                 ...state,
-                filters: [payload, ...state.filters],
+                filters: contains(payload, state.filters)
+                    ? pull(payload, state.filters)
+                    : [payload, ...state.filters],
             };
 
         default:
