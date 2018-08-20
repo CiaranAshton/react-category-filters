@@ -3,7 +3,7 @@ const { pipe, groupBy, pull, contains } = require('lodash/fp');
 const map = require('lodash/fp/map').convert({ cap: false });
 const pluralize = require('pluralize');
 
-// types
+// action types
 export const TOGGLE_FILTER = 'TOGGLE_FILTER';
 
 // actions
@@ -55,13 +55,16 @@ export type Range = {
 // helpers
 const refineRange = (item: string, label: string): Range => ({
     label: pluralize(label),
-    items: map(({ title }) => title)(item),
+    items: map('title')(item),
 });
 
 const groupSelections = (selection: string, label: string): Selection => ({
     label,
     count: selection.length,
-    items: map(refineRange)(groupBy('type')(selection)),
+    items: pipe(
+        groupBy('type'),
+        map(refineRange),
+    )(selection),
 });
 
 // selectors
